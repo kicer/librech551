@@ -39,40 +39,40 @@ static int ep_out_addr = 0x02;
 
 /* 命令格式：操作-1byte|长度-1byte|数据 */
 
-static char detect_chip_cmd_v1[64] = {0xa2, 0x13, 0x55, 0x53, 0x42, 0x20, 0x44, 0x42,
+static uint8_t detect_chip_cmd_v1[64] = {0xa2, 0x13, 0x55, 0x53, 0x42, 0x20, 0x44, 0x42,
 				   0x47, 0x20, 0x43, 0x48, 0x35, 0x35, 0x39, 0x20,
 				   0x26, 0x20, 0x49, 0x53, 0x50, 0x00}; /* 检测型号 */
 
-static char use_interface_cmd_v1[2] = {0xbb, 0x00}; /* 使用IF */
+static uint8_t use_interface_cmd_v1[2] = {0xbb, 0x00}; /* 使用IF */
 
-static char erase_page_cmd_v1[4] = {0xa9, 0x02, 0x00, 0x00}; /* 1KB/Page? */
+static uint8_t erase_page_cmd_v1[4] = {0xa9, 0x02, 0x00, 0x00}; /* 1KB/Page? */
 
-static char key_input_cmd_v1[6] = {0xa6, 0x04, 0x00, 0x00, 0x00, 0x00};
+static uint8_t key_input_cmd_v1[6] = {0xa6, 0x04, 0x00, 0x00, 0x00, 0x00};
 
-static char run_cmd_v1[4] = {0xa5, 0x02, 0x01, 0x00};
+static uint8_t run_cmd_v1[4] = {0xa5, 0x02, 0x01, 0x00};
 
-static char write_cmd_v1[64] = {0xa8, 0x00, 0x00, 0x00}; /* cmd, length, addrl, addrh, data */
-static char verify_cmd_v1[64] = {0xa7, 0x00, 0x00, 0x00}; /* cmd, length, addrl, addrh, data */
+static uint8_t write_cmd_v1[64] = {0xa8, 0x00, 0x00, 0x00}; /* cmd, length, addrl, addrh, data */
+static uint8_t verify_cmd_v1[64] = {0xa7, 0x00, 0x00, 0x00}; /* cmd, length, addrl, addrh, data */
 
-static char read_df_cmd_v1[2] = {0xb7, 0x00};
-static char claim_device_cmd_v1[4] = {0xa5, 0x02, 0x00, 0x00};
-static char erase_df_cmd_v1[4] ={0xb5, 0x02, 0x00, 0xc0};
-static char write_df_cmd_v1[64] = {0xb6, 0x00, 0x00, 0x00}; /* cmd, length, addrl, addrh, data */
+static uint8_t read_df_cmd_v1[2] = {0xb7, 0x00};
+static uint8_t claim_device_cmd_v1[4] = {0xa5, 0x02, 0x00, 0x00};
+static uint8_t erase_df_cmd_v1[4] ={0xb5, 0x02, 0x00, 0xc0};
+static uint8_t write_df_cmd_v1[64] = {0xb6, 0x00, 0x00, 0x00}; /* cmd, length, addrl, addrh, data */
 
-static char detect_chip_cmd_v2[] = { //cmd, len, ?, model, series?
+static uint8_t detect_chip_cmd_v2[] = { //cmd, len, ?, model, series?
 				0xa1, 0x12, 0x00, 0x52, 0x11, 0x4d, 0x43, 0x55, 0x20, 0x49, 0x53,
 				0x50, 0x20, 0x26, 0x20, 0x57, 0x43, 0x48, 0x2e, 0x43, 0x4e
 									};
-static char read_cfg_cmd_v2[] = {
+static uint8_t read_cfg_cmd_v2[] = {
 				0xa7, 0x02, 0x00, 0x1f, 0x00
 };
-static char erase_chip_cmd_v2[] = { //2KB per page?
+static uint8_t erase_chip_cmd_v2[] = { //2KB per page?
 				0xa4, 0x01, 0x00, 0x08
 };
-static char write_cmd_v2[64] = {0xa5, 0x00, 0x00, 0x00}; /* cmd, length, zero, addrl,
+static uint8_t write_cmd_v2[64] = {0xa5, 0x00, 0x00, 0x00}; /* cmd, length, zero, addrl,
 															addrh, z,    z,    random, data */
 
-static char verify_cmd_v2[64] = {0xa6, 0x00, 0x00, 0x00}; /* cmd, length, zero, addrl, */
+static uint8_t verify_cmd_v2[64] = {0xa6, 0x00, 0x00, 0x00}; /* cmd, length, zero, addrl, */
 
 
 int write_to_device(unsigned char *data, int size)
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 	int rc;
 	int i;
 
-	char inbuffer[64];
+	uint8_t inbuffer[64];
 
 	char *file_buffer = 0;
 
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
 
 	/* Set debugging output to max level.
 	 */
-	libusb_set_debug(NULL, 3);
+	libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_INFO);
 
 	/* Look for a specific device and open it.
 	 */
